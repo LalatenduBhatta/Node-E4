@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+nav {
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  align-items: center;
+}
+.logo {
+  font-size: 30px;
+  color: rgb(8, 225, 8);
+}
+.links {
+  width: 40%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.link {
+  text-decoration: none;
+  color: white;
+  font-size: 28px;
+}
+.link:hover {
+  color: orangered;
+}

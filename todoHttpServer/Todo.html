@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <h1 class="text-4xl bg-green-300">NODE JS TO-DO APP</h1>
+    <div class="h-40 bg-slate-400 flex gap-4 items-center px-2">
+        <input type="text" id="task" placeholder="write your task here..." class="flex-1 bg-slate-50 h-16 text-3xl">
+        <button class="px-10 py-4 bg-orange-500 text-white text-3xl font-bold cursor-pointer" id="add">ADD</button>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById("task")
+        const addBtn = document.getElementById("add")
+
+        addBtn.addEventListener("click", async () => {
+            let task = taskInput.value.trim()
+            if (task) {
+                //send the task to server
+                let response = await fetch("/newTask", {
+                    method: "POST",
+                    headers: { "Content-Type": "plain/text" },
+                    body: task
+                })
+                let data = await response.json()
+                console.log(data)
+            } else {
+                alert("Write Your Task Before Adding")
+            }
+        })
+    </script>
+</body>
+
+</html>
