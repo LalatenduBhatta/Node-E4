@@ -15,9 +15,15 @@
         <button class="px-10 py-4 bg-orange-500 text-white text-3xl font-bold cursor-pointer" id="add">ADD</button>
     </div>
 
+    <!-- Display the task -->
+    <div class="tasks">
+
+    </div>
+
     <script>
         const taskInput = document.getElementById("task")
         const addBtn = document.getElementById("add")
+        const tasksTag = document.querySelector(".tasks")
 
         addBtn.addEventListener("click", async () => {
             let task = taskInput.value.trim()
@@ -29,11 +35,38 @@
                     body: task
                 })
                 let data = await response.json()
-                console.log(data)
+                alert(data.message)
+
+                //get all tasks
+                getAllTasks()
             } else {
                 alert("Write Your Task Before Adding")
             }
         })
+
+        async function getAllTasks() {
+            try {
+                let response = await fetch("/allTasks")
+                let data = await response.json()
+                displayTasks(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getAllTasks()
+
+        function displayTasks(todo) {
+            let str = ``
+            todo.forEach((ele, i) => {
+                str += `
+                <div> 
+                  <li>${ele.task}</li>  
+                 </div>
+                `
+            })
+            tasksTag.innerHTML = str
+        }
     </script>
 </body>
 

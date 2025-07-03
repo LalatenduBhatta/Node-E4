@@ -22,6 +22,12 @@ const server = createServer((req, res) => {
             res.end(JSON.stringify({ message: "Task Stored in server" }))
         })
     }
+    else if (method == "GET" && url == "/allTasks") {
+        let allTodo = readFileSync("./todo.json", "utf-8") ?
+            JSON.parse(readFileSync("./todo.json", "utf-8")) : []
+
+        res.end(JSON.stringify(allTodo))
+    }
 })
 
 
