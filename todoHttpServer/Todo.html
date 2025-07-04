@@ -9,14 +9,14 @@
 </head>
 
 <body>
-    <h1 class="text-4xl bg-green-300">NODE JS TO-DO APP</h1>
+    <h1 class="text-4xl bg-green-300 text-center">NODE JS TO-DO APP</h1>
     <div class="h-40 bg-slate-400 flex gap-4 items-center px-2">
         <input type="text" id="task" placeholder="write your task here..." class="flex-1 bg-slate-50 h-16 text-3xl">
         <button class="px-10 py-4 bg-orange-500 text-white text-3xl font-bold cursor-pointer" id="add">ADD</button>
     </div>
 
     <!-- Display the task -->
-    <div class="tasks">
+    <div class="tasks flex flex-col items-center gap-4 mt-4 bg-gray-50 p-4">
 
     </div>
 
@@ -25,23 +25,41 @@
         const addBtn = document.getElementById("add")
         const tasksTag = document.querySelector(".tasks")
 
+        let editId = null
+
         addBtn.addEventListener("click", async () => {
             let task = taskInput.value.trim()
             if (task) {
-                //send the task to server
-                let response = await fetch("/newTask", {
-                    method: "POST",
-                    headers: { "Content-Type": "plain/text" },
-                    body: task
-                })
-                let data = await response.json()
-                alert(data.message)
+                if (editId) {
+                    //update
+                    let response = await fetch("/updateTask", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ id: editId, task })
+                    })
+                    let data = await response.json()
+                    //remove the editID
+                    editId = null
+                    addBtn.innerHTML = "ADD"
+                    addBtn.style.backgroundColor = "orange"
+                    //get all tasks
+                    getAllTasks()
+                } else {
+                    //add
+                    let response = await fetch("/newTask", {
+                        method: "POST",
+                        headers: { "Content-Type": "plain/text" },
+                        body: task
+                    })
+                    let data = await response.json()
 
-                //get all tasks
-                getAllTasks()
+                    //get all tasks
+                    getAllTasks()
+                }
             } else {
                 alert("Write Your Task Before Adding")
             }
+            taskInput.value = ""
         })
 
         async function getAllTasks() {
@@ -60,12 +78,43 @@
             let str = ``
             todo.forEach((ele, i) => {
                 str += `
-                <div> 
-                  <li>${ele.task}</li>  
+                <div class="bg-orange-200 shadow-md shadow-slate-700 flex w-3/4 px-10 h-20 flex justify-between items-center rounded-md"> 
+                  <div class="text-3xl">${ele.task}</div>
+                  <div>
+                    <button class="px-4 py-2 bg-blue-500 text-white font-bold rounded-sm me-2 cursor-pointer hover:bg-blue-600" onclick="editTask(${ele.id})">EDIT</button>
+                    <button class="px-4 py-2 bg-red-500 text-white font-bold rounded-sm cursor-pointer hover:bg-red-600" onclick="deleteTask(${ele.id})">DEL</button>
+                    </div>
                  </div>
                 `
             })
             tasksTag.innerHTML = str
+        }
+
+        async function deleteTask(id) {
+            let response = await fetch("/deleteTask", {
+                method: "DELETE",
+                headers: { "Content-Type": "plain/text" },
+                body: id
+            })
+            let data = await response.json()
+            // alert(data.message)
+            getAllTasks()
+        }
+
+        async function editTask(id) {
+
+            editId = id
+
+            let response = await fetch("/getEditTask", {
+                method: "POST",
+                headers: { "Content-Type": "plain/text" },
+                body: id
+            })
+            let data = await response.json()
+
+            taskInput.value = data.task
+            addBtn.innerHTML = "UPDATE"
+            addBtn.style.backgroundColor = "green"
         }
     </script>
 </body>

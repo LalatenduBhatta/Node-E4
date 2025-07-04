@@ -28,6 +28,44 @@ const server = createServer((req, res) => {
 
         res.end(JSON.stringify(allTodo))
     }
+    else if (method == "DELETE" && url == "/deleteTask") {
+        req.on("data", (data) => {
+            let id = data.toString()
+            let allTodo = JSON.parse(readFileSync("./todo.json", "utf-8"))
+
+            let updatedTodo = allTodo.filter(ele => ele.id != id)
+
+            writeFileSync("./todo.json", JSON.stringify(updatedTodo))
+
+            res.end(JSON.stringify({ message: "Task Deleted Successfully" }))
+        })
+    }
+    else if (method == "POST" && url == "/getEditTask") {
+        let allTodo = JSON.parse(readFileSync("./todo.json", "utf-8"))
+        req.on("data", data => {
+            let id = data.toString()
+            let editTask = allTodo.find((ele) => ele.id == id)
+            res.end(JSON.stringify(editTask))
+        })
+
+    }
+    else if (method == "PUT" && url == "/updateTask") {
+        let allTodo = JSON.parse(readFileSync("./todo.json", "utf-8"))
+        req.on("data", data => {
+            let updateTaskDetails = JSON.parse(data.toString())
+            allTodo = allTodo.map(ele => {
+                if (ele.id == updateTaskDetails.id) {
+                    ele.task = updateTaskDetails.task
+                }
+                return ele
+            })
+
+            writeFileSync("./todo.json", JSON.stringify(allTodo))
+
+            res.end(JSON.stringify({ message: "Task Updated Successfully" }))
+        })
+
+    }
 })
 
 
