@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>HELLO WORLD</h1>
+
+    <button id="get">GET DATA</button>
+    <button id="send">SEND DATA</button>
+
+    <script>
+        let getBtn = document.getElementById("get")
+
+        let sendBtn = document.getElementById("send")
+
+        getBtn.addEventListener("click", () => {
+            fetch("/getData").then((response) => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(data))
+        })
+
+        sendBtn.addEventListener("click", (req, res) => {
+            fetch("/sendData", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "msg": "GOOD AFTERNOON" },
+                body: JSON.stringify({ name: "Rahul" })
+            }).then(res => res.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(error))
+        })
+    </script>
+</body>
+
+</html>
