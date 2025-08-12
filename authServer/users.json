@@ -1,0 +1,16 @@
+[
+    {
+        "email": "rahul@gmail.com",
+        "password": "$2b$10$aXdnzoGYEqrl7HnC2S3yf.X7wr8tpjdzxzo6vE2wNiRpIEOItZh6K",
+        "gender": "Male",
+        "address": "Bengaluru",
+        "name": "Rahul"
+    },
+    {
+        "email": "saurabh@gmail.com",
+        "password": "$2b$10$y4rKJVJv0ni.2DhxkGtByOG9OXP3PWcOYE0Cpj1W6BF1a3nnOMygi",
+        "gender": "Male",
+        "address": "Mumbai",
+        "name": "Saurabh"
+    }
+]
