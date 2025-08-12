@@ -9,3 +9,11 @@ export function generateHash(password) {
         throw new Error(error.message)
     }
 }
+
+export function comparePassword(plainPassword, hashedPassword) {
+    try {
+        return bcrypt.compareSync(plainPassword, hashedPassword)
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
