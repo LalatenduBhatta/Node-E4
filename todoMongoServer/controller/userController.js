@@ -50,14 +50,9 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     try {
-        let { token } = req.cookies
-        let { id } = verifyToken(token)
-        if (!id) {
-            return res.status(401).send({ error: "Invalid Token" })
-        } else {
-            let userDetails = await User.findById(id)
-            return res.status(200).send(userDetails)
-        }
+        let { id } = req
+        let userDetails = await User.findById(id).select("-password -_id -__v")
+        return res.status(200).send({ userDetails })
     } catch (error) {
         return res.status(500).send({ error: "Something went Worng", msg: error.message })
     }

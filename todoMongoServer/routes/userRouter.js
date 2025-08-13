@@ -1,5 +1,6 @@
 import express from "express"
 import { getProfile, login, signup } from "../controller/userController.js";
+import { verifyUser } from "../middleware/verifyUser.js";
 
 const userRouter = express.Router()
 
@@ -13,7 +14,7 @@ userRouter.post("/signup", signup)
 userRouter.post("/login", login)
 
 //userDetails
-userRouter.get("/profile", getProfile)
+userRouter.get("/profile", verifyUser, getProfile)
 
 
 export default userRouter;
