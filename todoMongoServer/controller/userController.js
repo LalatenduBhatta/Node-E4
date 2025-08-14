@@ -57,3 +57,12 @@ export const getProfile = async (req, res) => {
         return res.status(500).send({ error: "Something went Worng", msg: error.message })
     }
 }
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie("token")
+        res.status(200).send({ message: "Logout Successful" })
+    } catch (error) {
+        return res.status(500).send({ error: "Something went Worng", msg: error.message })
+    }
+}

@@ -15,3 +15,14 @@ export const addTask = async (req, res) => {
         return res.status(500).send({ error: "Something Went Wrong", message: error.message })
     }
 }
+
+export const getAllTasks = async (req, res) => {
+    try {
+        let { id } = req
+        let allTasks = await Todo.find({ userId: id }).select("-userId -__v")
+        res.status(200).send(allTasks)
+    } catch (error) {
+        return res.status(500).send({ error: "Something Went Wrong", message: error.message })
+    }
+}
+

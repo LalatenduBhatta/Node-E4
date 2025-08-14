@@ -1,5 +1,6 @@
 import express from "express"
 import morgan from "morgan"
+import cors from "cors"
 import cookieParser from "cookie-parser"
 import dbConnect from "./config/db.js"
 import userRouter from "./routes/userRouter.js"
@@ -9,6 +10,7 @@ const app = express()
 app.use(express.json()) //json parser
 app.use(morgan("dev")) // http logger
 app.use(cookieParser()) // cookie parser
+app.use(cors({ origin: "http://localhost:5173" }))
 
 //routes
 app.get("/", (req, res) => res.send("Server At Work")) //demo route
